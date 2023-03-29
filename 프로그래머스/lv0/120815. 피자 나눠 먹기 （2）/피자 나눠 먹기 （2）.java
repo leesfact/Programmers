@@ -1,12 +1,15 @@
 class Solution {
     public int solution(int n) {
         int answer = 0;
+        int pizcnt = 1;
         
-        for(int i = 1; i <= 100; i++) {
-        	if((6*i)%n == 0) {
-        		answer =  (6*i)/6;
+        
+        while(true) {
+        	if((6*pizcnt) % n == 0) {
+        		answer =  (6 * pizcnt) / 6;
         		break;
         	}
+        	pizcnt++;
         }
         return answer;
     }
