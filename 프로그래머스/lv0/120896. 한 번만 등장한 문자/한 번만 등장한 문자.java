@@ -11,7 +11,6 @@ class Solution {
 		   Set<String> nonDupliSet = new LinkedHashSet<>();
 		   for(int i = 0; i < s.length(); i++) {
 			  String c =  Character.toString(s.charAt(i));
-			  
 			 if(nonDupliSet.contains(c)) {
 				 dupliSet.add(c);
 			 }else {
@@ -19,20 +18,18 @@ class Solution {
 			 }
 		   }
 		   
-		   Iterator<String> iterator = nonDupliSet.iterator();
-		   while(iterator.hasNext()) {
-			   String c = iterator.next();
-			   if(dupliSet.contains(c)) {
-				   iterator.remove();
-			   }
-		   }
-	        
+		   nonDupliSet.removeAll(dupliSet);
+		   System.out.println("중복값: " + dupliSet);
+		   System.out.println("중복안된 값: "+ nonDupliSet);
+		   
+
 		   String[] newStr = new String[nonDupliSet.size()];
 		   newStr = nonDupliSet.toArray(newStr);
 		   Arrays.sort(newStr);
 		   
 	       for(String str : newStr) {
 	    	   answer += str;
+	    	  
 	       }
 
 		  
