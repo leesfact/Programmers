@@ -9,9 +9,9 @@ class Solution {
         	A +=A;
         	for(int i = 0; i < length; i++ ) {
         		strArray[i] = A.substring(i,i+length);
-        		System.out.println(strArray[i]);
+        		
         		if(strArray[i].equals(B)) {
-        			answer = Math.abs(i-length);
+                    answer = Math.abs(i-length);
         		}
         	}
         }
