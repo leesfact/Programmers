@@ -1,7 +1,7 @@
 import java.util.*;
 class Solution {
     public int solution(int[][] lines) {
-      int[] rail = new int[200];
+       int[] rail = new int[201];
         for (int[] line : lines) {
             for (int j = (line[0] + 100); j < (line[1] + 100); j++) {
                 rail[j]++;
