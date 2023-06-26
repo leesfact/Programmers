@@ -1,7 +1,7 @@
 import java.util.*;
 class Solution {
     public String solution(String s) {
-        String[] ch = s.split("");
+       String[] ch = s.split("");
         
         ArrayList<String> list = new ArrayList<>();
         for(String a : ch) {
@@ -9,8 +9,10 @@ class Solution {
         }
         
         Collections.sort(list, Comparator.reverseOrder());
-        String answer = String.join("", list);
         
+        String answer = String.join("", list);
+       
+        System.out.println(answer);
         return answer;
     }
 }
