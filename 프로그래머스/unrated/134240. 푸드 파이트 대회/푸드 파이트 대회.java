@@ -1,18 +1,20 @@
 class Solution {
     public String solution(int[] food) {
-        String answer = "";
+        StringBuilder front = new StringBuilder();
+	        StringBuilder back = new StringBuilder();
 	        
-	        for(int i = 1; i < food.length; i++) {
-	        	int cnt = food[i] / 2 ;
+	        for(int i = 1; i < food.length; i++){
+	        	int cnt = food[i] / 2;
 	        	for(int j = 1; j <= cnt; j++) {
-	        		answer += i;
+	        		front.append(i);
+	        		back.insert(0, i);
 	        	}
 	        }
-	        String reverse = new StringBuilder(answer).reverse().toString();
-	        answer += 0 ;
-	        answer +=reverse;
 	        
-	       
-	        return answer;
+	        front.append('0').append(back);
+	        
+	        
+	        System.out.println(front.toString());
+	        return front.toString();
     }
 }
