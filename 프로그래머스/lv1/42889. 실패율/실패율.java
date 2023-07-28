@@ -1,32 +1,37 @@
-import java.util.*;
+
 class Solution {
     public int[] solution(int N, int[] stages) {
-       int totalUsers = stages.length;
-        int[] stageUserCount = new int[N + 2];
-        
-        for (int stage : stages) {
-            stageUserCount[stage]++;
+       int[] answer = new int[N];
+        double[] tempArr = new double[N];
+        int arrLength = stages.length;
+        int idx = arrLength;
+        double tempD = 0;
+        int tempI = 0;
+        for (int i = 0; i < arrLength; i++) {
+            int stage = stages[i];
+            if (stage != N + 1)
+                answer[stage - 1] += 1;
         }
-
-        Map<Integer, Double> stageFailRates = new HashMap<>();
-        for (int i = 1; i <= N; i++) {
-            if (totalUsers != 0) {
-                double failRate = (double) stageUserCount[i] / totalUsers;
-                stageFailRates.put(i, failRate);
-            } else {
-                stageFailRates.put(i, 0.0);
-            }
-            totalUsers -= stageUserCount[i];
-        }
-
-        List<Map.Entry<Integer, Double>> entryList = new ArrayList<>(stageFailRates.entrySet());
-        entryList.sort(Map.Entry.<Integer, Double>comparingByValue().reversed().thenComparing(Map.Entry.comparingByKey()));
-
-        int[] answer = new int[N];
         for (int i = 0; i < N; i++) {
-            answer[i] = entryList.get(i).getKey();
+            int personNum = answer[i];
+            tempArr[i] = (double) personNum / idx;
+            idx -= personNum;
+            answer[i] = i + 1;
         }
-        
+
+        for (int i = 0; i < N; i++) {
+            for (int j = 1; j < N - i; j++) {
+                if (tempArr[j - 1] < tempArr[j]) {
+                    tempD = tempArr[j - 1];
+                    tempArr[j - 1] = tempArr[j];
+                    tempArr[j] = tempD;
+
+                    tempI = answer[j - 1];
+                    answer[j - 1] = answer[j];
+                    answer[j] = tempI;
+                }
+            }
+        }
         return answer;
     }
 }
