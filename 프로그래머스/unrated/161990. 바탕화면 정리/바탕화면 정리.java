@@ -1,6 +1,6 @@
 class Solution {
     public int[] solution(String[] wallpaper) {
-       int minX = Integer.MAX_VALUE, minY = Integer.MAX_VALUE;
+        int minX = Integer.MAX_VALUE, minY = Integer.MAX_VALUE;
         int maxX = Integer.MIN_VALUE, maxY = Integer.MIN_VALUE;
         
         for (int i = 0; i < wallpaper.length; i++) {
@@ -14,8 +14,8 @@ class Solution {
             }
         }
 
-        maxX += 1;  // Here
-        maxY += 1;  // And here
+        maxX += 1;  
+        maxY += 1;  
         
         
         return new int[]{minX, minY, maxX, maxY};
