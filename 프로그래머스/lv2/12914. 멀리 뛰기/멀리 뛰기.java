@@ -1,18 +1,31 @@
 class Solution {
-    public long solution(int n) {
-        if(n <= 2) return n;
+    private static long[] memo;
+	
+	
+	public static long jumpCase(int n) {
+		
+		
+		if(n <= 2) return n;
+		
+		
+		if (memo[n] != 0) return memo[n];
+		
+		 memo[n] = (jumpCase(n - 1) + jumpCase(n - 2)) % 1234567;
+		 
+		
+		 return memo[n];
+	}
+	
+	
+	
+	 public static long solution(int n) {
 	       
-	       
-	       long[] ways = new long[n + 1];
-	       
-	       ways[1] = 1;
-	       ways[2] = 2;
-	       
-	       for (int i = 3; i <= n; i++) {
-	            ways[i] = (ways[i - 1] + ways[i - 2]) % 1234567;
-	        }
-	       
-	       
-	       return ways[n];
+		 memo = new long[n + 1];
+		 
+		 
+		 
+		 
+		 return jumpCase(n);
     }
+    
 }
