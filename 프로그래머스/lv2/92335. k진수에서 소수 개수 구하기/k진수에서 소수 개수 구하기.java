@@ -1,6 +1,6 @@
 class Solution {
     public int solution(int n, int k) {
-        int answer = 0;
+         int answer = 0;
         
         
         StringBuilder nPrimeNumber = new StringBuilder();
@@ -17,12 +17,10 @@ class Solution {
     	
     	
     	for(String s : str) {
-    		if(s.isEmpty()) {
-    			s = "1";
+    		if(s.isEmpty() || s.equals("1")) {
+    			continue;
     		}
-    		
     		long primeNumber = Long.parseLong(s);
-    		if(primeNumber == 1) continue;
     		boolean isPrime = true;
     		for(long j = 2; j*j <= primeNumber; j++) {
     			if(primeNumber % j == 0) {
