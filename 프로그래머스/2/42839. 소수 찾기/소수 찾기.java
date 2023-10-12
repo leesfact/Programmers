@@ -1,37 +1,45 @@
 import java.util.*;
 class Solution {
-    static Set<Integer> set = new HashSet<>();
+    static Set<String> set = new LinkedHashSet <>();
+    
+    public static void dfs(String prefix, String remaining) {
+		
+		if(!prefix.isEmpty()) {
+			set.add(Integer.toString(Integer.parseInt(prefix)));
+		}
+		
+		if(remaining.isEmpty()) {
+			return;
+		}
+		
+		for(int i = 0; i < remaining.length(); i++) {
+			
+			dfs(prefix + remaining.charAt(i), remaining.substring(0,i) + remaining.substring(i+1));
+		}
+	}
     public int solution(String numbers) {
         int answer = 0;
-        for (int i = 1; i <= numbers.length(); i++) {
-            dfs("", numbers, i);
+        
+        dfs("", numbers);
+        
+        for(String numStr : set) {
+        	int num = Integer.parseInt(numStr);
+        	if(isPrime(num)) {
+        		answer++;
+        	}
         }
-        System.out.println(set);
-        for (int num : set) {
-            if (isPrime(num)) {
-                answer++;
-            }
-        }
+        
+        
         return answer;
     }
     
-    public static void dfs(String prefix, String str, int k) {
-        if (prefix.length() == k) {
-            set.add(Integer.parseInt(prefix));
-            return;
-        }
-        for (int i = 0; i < str.length(); i++) {
-            dfs(prefix + str.charAt(i), str.substring(0, i) + str.substring(i + 1), k);
-        }
-    }
-	
-	public static boolean isPrime(int n) {
-		
+    public static boolean isPrime(int n) {
 		if(n < 2) return false;
+		
 		for(int i = 2; i <= Math.sqrt(n); i++) {
 			if(n % i == 0) return false;
 		}
-		return true;
 		
+		return true;
 	}
 }
