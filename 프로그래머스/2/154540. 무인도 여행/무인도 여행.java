@@ -64,7 +64,11 @@ class Solution {
         if (results.size() == 0) {
             return new int[]{-1};
         } else {
-            return results.stream().mapToInt(Integer::intValue).toArray();
+            int[] arr = new int [results.size()];
+            for(int i = 0; i < results.size(); i++) {
+            	arr[i] = results.get(i);
+            }
+            return arr;
         }
     }
 }
