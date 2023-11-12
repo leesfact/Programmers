@@ -1,101 +1,78 @@
 import java.util.*;
 class Solution {
-    static final int[][] fatigueCosts = {
-			{1, 1, 1},
-			{5, 1, 1},
-			{25, 5, 1}
-	};
-	
-	static class MineralGroup {
-        int[] groupMinerals;
+    public int solution(int[] picks, String[] minerals) {
+		int answer = 0;
 
-        public MineralGroup(int[] groupMinerals) {
-            this.groupMinerals = groupMinerals;
-        }
+		int[][] arr = new int[][]{{1, 1, 1}, {5, 1, 1}, {25, 5, 1}};
+		int size = Arrays.stream(picks).sum();
+		List<Mineral> list = new ArrayList<>();
+
+		for(int i = 0; i < minerals.length; i+=5) {
+			if(size == 0) {
+				break;
+			}
+
+			int diamond = 0;
+			int iron = 0;
+			int stone = 0;
+
+			for(int j = i; j < i + 5; j++) {
+				if(j == minerals.length) {
+					break;
+				}
+
+				int mineral = 0;
+				if(minerals[j].startsWith("i")) {
+					mineral = 1;
+				} else if(minerals[j].startsWith("s")) {
+					mineral = 2;
+				}
+
+				diamond += arr[0][mineral];
+				iron += arr[1][mineral];
+				stone += arr[2][mineral];
+			}
+			list.add(new Mineral(diamond, iron, stone));
+			size--;
+		}
+
+		list.sort(((o1, o2) -> (o2.stone - o1.stone)));
         
-        public int fatigueWithPickaxe(int[][] fatigueCosts, int pickaxe) {
-            int fatigue = 0;
-            for (int i = 0; i < groupMinerals.length; i++) {
-                fatigue += groupMinerals[i] * fatigueCosts[pickaxe][i];
-            }
-            return fatigue;
-        }
+        for(Mineral m : list) {
+			int diamond = m.diamond;
+			int iron = m.iron;
+			int stone = m.stone;
+
+			if(picks[0] > 0) {
+				answer += diamond;
+				picks[0]--;
+				continue;
+			}
+
+			if(picks[1] > 0) {
+				answer += iron;
+				picks[1]--;
+				continue;
+			}
+
+			if(picks[2] > 0) {
+				answer += stone;
+				picks[2]--;
+			}
+		}
+        
+		return answer;
 	}
-    
-	
 
-	public static int solution(int[] picks, String[] minerals) {
-		List<MineralGroup> groups = new ArrayList<>();
-        int totalFatigue = 0;
-        
-        int totalPicks = Arrays.stream(picks).sum();
-        int mineralsToProcess = Math.min(minerals.length, totalPicks * 5);
-        
-        
-        for (int i = 0; i < mineralsToProcess; i += 5) {
-            int[] groupMinerals = new int[3];
-            int groupEnd = Math.min(i + 5, minerals.length); 
-            for (int j = i; j < groupEnd; j++) {
-                groupMinerals[getMineralIndex(minerals[j])]++;
-            }
-            groups.add(new MineralGroup(groupMinerals));
-        }
-        
-      
-        groups.sort((g1, g2) -> Integer.compare(
-            g2.fatigueWithPickaxe(fatigueCosts, 2), 
-            g1.fatigueWithPickaxe(fatigueCosts, 2)
-        ));
-        
-       
-        for (MineralGroup group : groups) {
-        	
-        	if (totalPicks == 0) {
-                break;
-            }
-        	
-            int bestPickaxe = selectBestPickaxeForGroup(picks, group.groupMinerals);
-            
-            if (bestPickaxe == -1) {
-                break;
-            }
-            
-            for (int i = 0; i < group.groupMinerals.length; i++) {
-                totalFatigue += group.groupMinerals[i] * fatigueCosts[bestPickaxe][i];
-            }
-            picks[bestPickaxe]--;
-        }
-        System.out.println(totalFatigue);
-        return totalFatigue;
-    }
+	class Mineral {
+		private int diamond;
+		private int iron;
+		private int stone;
 
-    private static int selectBestPickaxeForGroup(int[] remainingPicks, int[] groupMinerals) {
-        int minGroupFatigue = Integer.MAX_VALUE;
-        int bestPickaxe = -1;
-
-        
-        for (int i = 0; i < remainingPicks.length; i++) {
-            if (remainingPicks[i] > 0) {
-                int fatigue = 0;
-                for (int j = 0; j < 3; j++) {
-                    fatigue += groupMinerals[j] * fatigueCosts[i][j];
-                }
-                if (fatigue < minGroupFatigue) {
-                    minGroupFatigue = fatigue;
-                    bestPickaxe = i;
-                }
-            }
-        }
-
-        return bestPickaxe;
-    }
-
-    private static int getMineralIndex(String mineral) {
-        switch (mineral) {
-            case "diamond": return 0;
-            case "iron":    return 1;
-            case "stone":   return 2;
-            default:        return -1;
-        }
-    }
+		public Mineral(int diamond, int iron, int stone) {
+			this.diamond = diamond;
+			this.iron = iron;
+			this.stone = stone;
+		}
+	}
 }
