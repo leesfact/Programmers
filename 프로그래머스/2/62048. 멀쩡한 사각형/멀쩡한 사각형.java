@@ -1,7 +1,7 @@
 class Solution {
-    public static long gcd(int a , int b) {
+    public static long gcd(long a , long b) {
 		while(b != 0) {
-			int temp = b;
+			long temp = b;
 			b = a % b;
 			a = temp;
 		}
@@ -11,11 +11,14 @@ class Solution {
 	
 	public static long solution(int w, int h) {
 		
+		long lw = (long) w;
+		long lh = (long) h;
 		
-		long a = gcd(w,h);
+		long a = gcd(lw,lh);
 		
-        long answer = (long)w * (long)h - ((long)w + (long)h - a);
-        
+		long answer = lw * lh - (lw + lh - a);
+
+		
         return answer;
     }
 }
