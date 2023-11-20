@@ -4,7 +4,7 @@ class Solution {
 	static ArrayList<Integer> minList ;
 	
 	public static void rotation(int y1, int x1, int y2, int x2) {
-		y1--; x1--; y2--; x2--;
+		
 		int temp = map[y1][x1];
 		int min = temp;
 		
@@ -35,6 +35,8 @@ class Solution {
 
 	    map[y1][x1 + 1] = temp; 
 	    
+	    
+	    
 	    minList.add(min); 
 		
 	}
@@ -42,12 +44,12 @@ class Solution {
 	public static int[] solution(int rows, int columns, int[][] queries) {
 		int N = rows;
 		int M =  columns;
-		map = new int[N][M];
+		map = new int[N+1][M+1];
 		minList = new ArrayList<>();
 
 		int num = 1;
-		for(int i = 0; i < N; i++) {
-			for(int j = 0; j < M; j++) {
+		for(int i = 1; i <= N; i++) {
+			for(int j = 1; j <= M; j++) {
 				map[i][j] = num++;
 			}
 		}
