@@ -1,21 +1,22 @@
 import java.util.*;
 class Solution {
-    static boolean[] visitedBox;
     static int[] box;
-    static ArrayList<Integer> groupList = new ArrayList<>();
-    
-    
-    public static void dfs(int index) {
+	static ArrayList<Integer> groupList = new ArrayList<>();
+	
+	public static void dfs(int index) {
 		
-		if(visitedBox[index]) return;
+		
 	
 		int cnt = 0;
-		while(!visitedBox[index]) {
-			visitedBox[index] = true;
+		while(box[index] != -1) {
+			int nextIndex = box[index];
+			box[index] = -1;
+			index = nextIndex;
 			cnt++;
-			index = box[index];
 		}
-		groupList.add(cnt);
+		if(cnt > 0) {
+			groupList.add(cnt);			
+		}
 		
 		
 		
@@ -25,16 +26,18 @@ class Solution {
 		
 		int N = cards.length;
 		box = new int[N+1];
-		visitedBox = new boolean[N+1];
+		
 		
 		for(int i = 1; i <= N; i++) {
 			box[i] = cards[i-1];
 		}
 		
 		for(int i = 1; i <= N; i++) {
-			dfs(i);	
+			if(box[i] != -1) {
+				dfs(i);					
+			}
 		}
-		
+			
 		
         Collections.sort(groupList, Collections.reverseOrder());
         
