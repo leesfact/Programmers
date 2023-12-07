@@ -1,5 +1,5 @@
 class Solution {
-    public static int[] solution(long begin, long end) {
+public static int[] solution(long begin, long end) {
 		int[] answer = new int[(int)(end - begin) + 1];
         
 		for (int i = 0; i < answer.length; i++) {
