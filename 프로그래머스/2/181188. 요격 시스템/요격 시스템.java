@@ -1,21 +1,18 @@
 import java.util.*;
 class Solution {
     public int solution(int[][] targets) {
-        Arrays.sort(targets, Comparator.comparingInt(o -> o[1]));
-		
-		
-        int missileCount = 0;
-        double lastIntercept = -0.5;
-        
-        for(int[] target : targets) {
-        	
-        	if(target[0] > lastIntercept) {
-        		missileCount++;
-        		lastIntercept = target[1] - 0.1;
-        	}
+          Arrays.sort(targets, (a, b) -> a[0] - b[0]); 
+        int cnt = 0;
+        int last = -1;
+        for (int i = 0; i < targets.length; i++) {
+            int[] missile = targets[i];
+            if (missile[0] > last) { 
+                cnt++;
+                last = missile[1] - 1; 
+            } else if (missile[1] - 1 < last) { 
+                last = missile[1] - 1; 
+            }
         }
-    
-        
-        return missileCount;
+        return cnt;
     }
 }
