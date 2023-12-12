@@ -1,10 +1,11 @@
 class Solution {
     
     static int MAX = 11;
-    static int[] bestRyanList;
-    static int bestScoreDiff = -1;
-    
-    public static void calculateScore(int[] info, int[] ryanList) {
+	
+	static int[] bestRyanList;
+	static int bestScoreDiff = 0;
+	
+	public static void calculateScore(int[] info, int[] ryanList) {
 		int apeachScore = 0;
 	    int ryanScore = 0;
 	        
@@ -31,7 +32,8 @@ class Solution {
         }
 		
 	}
-    public static void search(int n , int[] info, int[] ryanList, int index) {
+	
+	public static void search(int n , int[] info, int[] ryanList, int index) {
 		if(n < 0) return; // 남은 화살이 없다면 더 이상 진행할 수 없
 		
 		if(index == MAX) { // 모든 점대를 고려했다면,
@@ -50,9 +52,10 @@ class Solution {
 		}
 		
 	}
-    public static int[] solution(int n, int[] info) {
+	
+	public static int[] solution(int n, int[] info) {
         bestRyanList = new int[MAX];
-        bestScoreDiff = -1;
+        bestScoreDiff = 0;
         
         int[] ryanList = new int[MAX];
         
@@ -61,7 +64,7 @@ class Solution {
         
         
        
-        if(bestScoreDiff == -1) return new int[] {-1};
+        
         if(bestScoreDiff == 0) return new int[] {-1};
         else return bestRyanList;
         
