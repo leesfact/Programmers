@@ -1,6 +1,6 @@
 import java.util.*;
 class Solution {
-   static Map<String, List<Integer>> infoMap = new HashMap<>();
+    static Map<String, List<Integer>> infoMap = new HashMap<>();
 	
 	
 	public static void preprocessInfo(String[] info) {
@@ -26,9 +26,9 @@ class Solution {
                 }
             }
         }
-		
+	
 
-        // 각 조건에 대한 점수 리스트 정렬
+       
         for (String key : infoMap.keySet()) {
             Collections.sort(infoMap.get(key));
         }
@@ -44,6 +44,7 @@ class Solution {
 
         List<Integer> scores = infoMap.get(key);
        
+     
         int left = 0, right = scores.size();
         while (left < right) {
             int mid = (left + right) / 2;
