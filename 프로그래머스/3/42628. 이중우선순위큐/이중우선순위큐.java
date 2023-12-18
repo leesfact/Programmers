@@ -1,39 +1,34 @@
 import java.util.*;
 class Solution {
-    public static int[] getMaxMin(PriorityQueue<Integer> pq) {
-		PriorityQueue<Integer> reversePq = new PriorityQueue<>(Comparator.reverseOrder());
-		reversePq.addAll(pq);
-		
-		if(pq.isEmpty()) return new int[] {0,0};
-		
-		return new int[] {reversePq.poll(), pq.poll()};
-	}
-	
-	public static int[] solution(String[] operations) {
-        
+    public int[] solution(String[] operations) {
         PriorityQueue<Integer> pq = new PriorityQueue<>();
+        PriorityQueue<Integer> descendingPq = new PriorityQueue<>(Comparator.reverseOrder());
         
-        for(int i = 0; i < operations.length; i++) {
-        	char command = operations[i].charAt(0);
-        	int num = Integer.parseInt(operations[i].split(" ")[1]);
+        for(String operation : operations) {
+        	String[] parts = operation.split(" ");
+        	char command = parts[0].charAt(0);
+        	int num = Integer.parseInt(parts[1]);
+        	
         	if(command == 'I') {
         		pq.add(num);
-        	}else { // command == 'D'
+        		descendingPq.add(num);
+        	}else if(command == 'D') {
         		if(!pq.isEmpty()) {
-        			
-        			if(num == -1) {
-        				pq.remove();
+        			if(num == 1) {
+        				int max = descendingPq.poll();
+        				pq.remove(max);
         			}else {
-        				PriorityQueue<Integer> descendingPq = new PriorityQueue<>(Comparator.reverseOrder());
-        				descendingPq.addAll(pq);
-        				pq.remove(descendingPq.poll());
-        			}        			
+        				int min = pq.poll();
+        				descendingPq.remove(min);
+        			}
         		}
-        		
         	}
         }
         
-       
-        return getMaxMin(pq);
+        if(pq.isEmpty()) {
+        	return new int[] {0,0};
+        }else {
+        	return new int[] {descendingPq.peek(), pq.peek()};
+        }
     }
 }
