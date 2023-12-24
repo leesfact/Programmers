@@ -1,30 +1,33 @@
 import java.util.*;
 class Solution {
-    public static int transform(String begin, String target, String[] words, boolean[] visited) {
-		if(begin.equals(target)) return 0;
+    static class Pair {
+		String word;
+		int depth;
 		
-		int minSteps = Integer.MAX_VALUE;
-		for (int i = 0; i < words.length; i++) {
-            if (!visited[i] && oneCharDiff(begin, words[i])) {
-                visited[i] = true;
-                int steps = transform(words[i], target, words, visited);
-                if (steps != Integer.MAX_VALUE) {
-                    minSteps = Math.min(minSteps, steps + 1);
-                }
-                visited[i] = false;
-            }
-        }
-
-        return minSteps;
+		public Pair(String word, int depth) {
+			
+			this.word = word;
+			this.depth = depth;
+			
+		}
 	}
 	
-	public static boolean oneCharDiff(String a, String b) {
-        int count = 0;
-        for (int i = 0; i < a.length(); i++) {
-            if (a.charAt(i) != b.charAt(i)) count++;
-        }
-        return count == 1;
-    }
+	public static boolean canTransform(String word1, String word2) {
+		int count = 0;
+		
+		for(int i = 0; i < word1.length(); i++) {
+			if (word1.charAt(i) != word2.charAt(i)) {
+                count++;
+                if (count > 1) {
+                    return false;
+                }
+            }
+		}
+		
+		return count == 1;
+	}
+	
+	
 	
 
 	
@@ -32,12 +35,29 @@ class Solution {
         
 		if(!Arrays.asList(words).contains(target)) return 0;
 		
+		Queue<Pair> queue = new LinkedList<>();
+		
 		boolean[] visited = new boolean[words.length];
 		
-		int steps = transform(begin, target, words, visited);
+		queue.add(new Pair(begin, 0));
 		
-		System.out.println(steps);
-		
-        return steps == Integer.MAX_VALUE ? 0 : steps;
+		while(!queue.isEmpty()) {
+			Pair current = queue.poll();
+			String currentWord = current.word;
+			int currentDepth = current.depth;
+			
+			if(currentWord.equals(target)) {
+				return currentDepth;
+			}
+			
+			 for (int i = 0; i < words.length; i++) {
+	                if (!visited[i] && canTransform(currentWord, words[i])) {
+	                    visited[i] = true;
+	                    queue.add(new Pair(words[i], currentDepth + 1));
+	                }
+            }
+			 
+        }
+        return 0;
     }
 }
