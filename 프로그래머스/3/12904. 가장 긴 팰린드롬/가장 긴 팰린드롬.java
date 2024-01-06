@@ -1,32 +1,34 @@
 class Solution
 {
-   public static int expand(String s, int left, int right) {
-		while(left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
-			left--;
-			right++;
+    public static boolean isPalindrome(String s, int start, int end) {
+		
+		while(start < end) {
+			if(s.charAt(start) != s.charAt(end)){
+				return false;
+			}
+			
+			start++;
+			end--;
 		}
 		
-		return right - left - 1;
+		return true;
 	}
+	
+	
 	
 	public static int solution(String s) {
       
-		if (s.length() == 1) return 1; 
+		int maxLength = 0;
 		
-		int start = 0, end = 0;
-		
-		for(int i = 0; i < s.length(); i++) {
-			int oddLength = expand(s, i, i);
-			int evenLength = expand(s,i, i+1);
-			int len = Math.max(oddLength, evenLength);
-			if(len > end - start) {
-				start = i - (len - 1) / 2;
-				end = i + len / 2;
+		for(int start = 0; start < s.length(); start++) {
+			for(int end = s.length() - 1; end >= start; end--) {
+				if(s.charAt(start) == s.charAt(end) && isPalindrome(s, start, end)) {
+					maxLength = Math.max(maxLength, end - start + 1);
+				}
 			}
+			
 		}
-	
-
-        
-		return end - start + 1;
+		
+		return maxLength;
     }
 }
