@@ -1,19 +1,15 @@
 import java.util.*;
 class Solution {
     public int solution(int[][] routes) {
-       Arrays.sort(routes, Comparator.comparing(o -> o[1]));
-        
-        int cameraCount = 0;
-        int lastCamera = Integer.MIN_VALUE;
-        
-        for(int[] route : routes) {
-        	
-        	if(route[0] > lastCamera) {
-        		cameraCount++;
-        		lastCamera = route[1];
-        	}
+        Arrays.sort(routes, (a, b) -> Integer.compare(a[1], b[1]));
+        int ans = 0;
+        int last_camera = Integer.MIN_VALUE;
+        for (int[] a : routes) {
+            if (last_camera < a[0]) {
+                ++ans;
+                last_camera = a[1];
+            }
         }
-        
-        return cameraCount;
+        return ans;
     }
 }
