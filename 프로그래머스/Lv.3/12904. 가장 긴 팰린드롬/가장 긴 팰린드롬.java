@@ -1,35 +1,36 @@
 class Solution
 {
-    public int solution(String s)
-    {
-       int answer = 0;
-        for(int start = 0, end = s.length(); start < end; start++) {
-            int startIndex = start;
-            int endIndex = end - 1;
-            int maxCount = end - start;
-            int searchLastIndex = -1;
-            if(answer >= maxCount) break;
-            while(endIndex > startIndex) {
-                char ch1 = s.charAt(startIndex);
-                char ch2 = s.charAt(endIndex);
-                if(ch1 == ch2) {
-                    if(searchLastIndex == -1)
-                        searchLastIndex = endIndex;
-                    startIndex++;
-                    endIndex--;
-                } else {
-                    if(searchLastIndex == -1) 
-                        endIndex--;
-                    else {
-                        startIndex = start;
-                        endIndex = searchLastIndex - 1;
-                        searchLastIndex = -1;
-                    }
-                    maxCount--;
+    public int solution(String s) {
+        for (int answer = s.length(); answer > 1; answer--) {
+            int start = 0;
+            int end = 0 + answer - 1;
+
+            while (end < s.length()) {
+                if (isPalindrome(s, start, end)) {
+                    return answer;
                 }
+
+                start++;
+                end++;
             }
-            answer = answer < maxCount ? maxCount : answer;
         }
-        return answer;
+
+        return 1;
     }
+
+    private boolean isPalindrome(String s, int start, int end) {
+        int diffBy2 = (end - start + 1) / 2 - 1;
+
+        for (int i = 0; i <= diffBy2; i++) {
+            char c1 = s.charAt(start + i);
+            char c2 = s.charAt(end - i);
+
+            if (c1 != c2) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+    
 }
