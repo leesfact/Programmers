@@ -1,35 +1,27 @@
 import java.util.*;
 class Solution {
-    public static int solution(String[] user_id, String[] banned_id) {
-        
-		Set<Set<String>> result = new HashSet<>();
-		 matchUser(result, new HashSet<>(), user_id, banned_id, 0);
-		
-        return result.size();
-    }
+    static Set<Integer> set;
 	
-	public static void matchUser(Set<Set<String>> result, Set<String> currentSet, 
-			String[] user_id, String[] banned_id, int index) {
+	public static int solution(String[] user_id, String[] banned_id) {
+		set = new HashSet<>();
 		
+		go(0, user_id, banned_id, 0);
+		
+		
+		
+		return set.size();
+	}
+	
+	public static void go(int index, String[] user_id, String[] banned_id, int bit) {
 		if(index == banned_id.length) {
-			result.add(new HashSet<>(currentSet));
+			set.add(bit);
 			return;
 		}
+		String reg = banned_id[index].replace("*", "[\\w]");
 		
-		for(String user : user_id) {
-			if(currentSet.contains(user)) continue;
-			if(matches(user, banned_id[index])) {
-				currentSet.add(user);
-				matchUser(result, currentSet, user_id, banned_id, index + 1);
-				currentSet.remove(user);
-			}
+		for(int i = 0; i < user_id.length; i++) {
+			if((((bit >> i) & 1) == 1) ||!user_id[i].matches(reg)) continue;
+			go(index + 1, user_id, banned_id, (bit | 1<<i));
 		}
-	}
-	public static boolean matches(String user, String banned) {
-		if (user.length() != banned.length()) return false;
-		for (int i = 0; i < user.length(); i++) {
-			if (banned.charAt(i) != '*' && user.charAt(i) != banned.charAt(i)) return false;
-		}
-		return true;
 	}
 }
