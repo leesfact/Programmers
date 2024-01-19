@@ -1,24 +1,22 @@
+import java.util.*;
 class Solution {
-    public int solution(int sticker[]) {
-        if (sticker.length == 1) return sticker[0];
-
-        int n = sticker.length;
-        int[] dp1 = new int[n];
-        int[] dp2 = new int[n];
-
-        // 첫 번째 스티커를 선택하는 경우
-        dp1[0] = dp1[1] = sticker[0];
-        for (int i = 2; i < n - 1; i++) {
-            dp1[i] = Math.max(dp1[i - 1], dp1[i - 2] + sticker[i]);
+    public int solution(int[] sticker) {
+        if(sticker.length == 1){
+            return sticker[0];
+        } else if(sticker.length == 2){
+            return Math.max(sticker[0], sticker[1]);
+        } else {
+            return Math.max(findMaxSum(0, sticker.length - 2, sticker), findMaxSum(1, sticker.length - 1, sticker));
         }
+    }
 
-        // 첫 번째 스티커를 선택하지 않는 경우
-        dp2[0] = 0;
-        dp2[1] = sticker[1];
-        for (int i = 2; i < n; i++) {
-            dp2[i] = Math.max(dp2[i - 1], dp2[i - 2] + sticker[i]);
+    public int findMaxSum(int from, int to, int[] sticker) {
+        int[] sumArr = new int[sticker.length - 1];
+        sumArr[0] = sticker[from];
+        sumArr[1] = Math.max(sticker[from + 1], sticker[from]);
+        for (int i = from + 2, sumIndex = 2; i <= to; i++, sumIndex++) {
+            sumArr[sumIndex] = Math.max((sticker[i] + sumArr[sumIndex - 2]), sumArr[sumIndex - 1]);
         }
-
-        return Math.max(dp1[n - 2], dp2[n - 1]);
+        return sumArr[sumArr.length - 1];
     }
 }
