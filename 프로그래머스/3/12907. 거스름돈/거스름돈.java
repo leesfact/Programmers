@@ -1,16 +1,12 @@
 class Solution {
     public int solution(int n, int[] money) {
-        int[] dp = new int[n+1];
-        dp[0] = 1;
-        
-        for(int coin : money) {
-        	for(int amount = coin; amount <= n; amount++) {
-        		dp[amount] += dp[amount - coin];
-        		dp[amount] %= 1_000_000_007;
-        	}
+        int[] arr = new int[n];
+        for(int i : money){
+            arr[i-1] += 1;
+            for(int j=0; j<n ; j++) {
+                if(j>=i) { arr[j] += arr[j - i]; }
+            }
         }
-        
-        
-        return dp[n];
+        return arr[n-1];
     }
 }
