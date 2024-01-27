@@ -1,34 +1,45 @@
 class Solution {
-    public int solution(int n, int[][] results) {
-        boolean[][] graph = new boolean[n+1][n+1];
+    static boolean[][] graph;
+	static boolean[] visited;
+	static int winCount;
+	static int loseCount;
+	
+	public static void dfs(int node, int n, boolean reverse) {
+		visited[node] = true;
+		for (int i = 1; i <= n; i++) {
+            if (!visited[i] && (reverse ? graph[i][node] : graph[node][i])) {
+                if (reverse) {
+                    loseCount++;
+                } else {
+                    winCount++;
+                }
+                dfs(i, n, reverse);
+            }
+        }
+	}
+	
+	public static int solution(int n, int[][] results) {
+        graph = new boolean[n+1][n+1];
+		int answer = 0;
+		
 		
 		for(int[] result : results) {
 			graph[result[0]][result[1]] = true;
 		}
 		
-		
-		
-		for(int k = 1; k <= n; k++) {
-			for(int i = 1; i <=n; i++) {
-				for(int j = 1; j <= n; j++) {
-					if(graph[i][k] && graph[k][j]) {
-						graph[i][j] = true;
-					}
-				}
-			}
-		}
-		
-		
-		int answer = 0;
 		for(int i = 1; i <= n; i++) {
-			int count = 0;
-			for(int j = 1; j <= n; j++) {
-				if(graph[i][j] || graph[j][i]) count++;
-			}
+			visited = new boolean[n+1];
+			winCount = 0;
+			loseCount = 0;
 			
-			if(count == n - 1) answer++;
+			dfs(i, n, false);
+			visited = new boolean[n+1];
+			dfs(i, n, true);
+			
+			if (winCount + loseCount == n - 1) {
+                answer++;
+            }
 		}
-        
         
         return answer;
     }
