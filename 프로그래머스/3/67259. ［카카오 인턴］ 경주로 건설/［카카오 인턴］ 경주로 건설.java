@@ -1,6 +1,6 @@
 import java.util.*;
 class Solution {
-    static int[][] dirs = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}}; 
+    static int[][] DIRS = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}}; 
     static int[][][] cost; 
     static int N;
     static final int STRAIGHT = 100;
@@ -19,8 +19,8 @@ class Solution {
             int accCost = current[3];
 
             for (int i = 0; i < 4; i++) {
-                int newY = y + dirs[i][0];
-                int newX = x + dirs[i][1];
+                int newY = y + DIRS[i][0];
+                int newX = x + DIRS[i][1];
 
                 if (newY >= 0 && newY < N && newX >= 0 && newX < N && board[newY][newX] == 0) {
                     int newCost = accCost + STRAIGHT;
@@ -61,7 +61,9 @@ class Solution {
         
         int minCost = Integer.MAX_VALUE;
         for (int i = 0; i < 4; i++) {
-            minCost = Math.min(minCost, cost[N - 1][N - 1][i]);
+            if (cost[N-1][N-1][i] < minCost) {
+                minCost = cost[N-1][N-1][i];
+            }
         }
 
         return minCost;
