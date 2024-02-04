@@ -1,66 +1,69 @@
 import java.util.*;
 class Solution {
-    public static final int INF = 10_000_000;
+    static int[] dist;
+    static List<Node>[] list;
 
-    public static int[] solution(int n, int[][] roads, int[] sources, int destination) {
-        ArrayList<ArrayList<Node>> graph = new ArrayList<>();
-        for (int i = 0; i <= n; i++) {
-            graph.add(new ArrayList<>());
-        }
-
-        for (int[] road : roads) {
-            int a = road[0];
-            int b = road[1];
-            graph.get(a).add(new Node(b, 1));
-            graph.get(b).add(new Node(a, 1));
-        }
-
-        int[] shortestPaths = dijkstra(graph, destination, n);
-
+    public int[] solution(int n, int[][] roads, int[] sources, int destination){
         int[] answer = new int[sources.length];
-        for (int i = 0; i < sources.length; i++) {
-            int distance = shortestPaths[sources[i]];
-            answer[i] = distance == INF ? -1 : distance;
+
+        dist = new int[n+1];
+        list = new List[n+1];
+
+        for(int i=1; i<=n; i++) {
+            dist[i] = Integer.MAX_VALUE;
+        }
+
+        for(int i=1; i<=n; i++) {
+            list[i] = new ArrayList<>();
+        }
+
+        for(int i=0; i<roads.length; i++) {
+            list[roads[i][0]].add(new Node(roads[i][1], 1));
+            list[roads[i][1]].add(new Node(roads[i][0], 1));
+        }
+
+        bfs(destination);
+
+        for(int i=0; i<sources.length; i++) {
+            if(dist[sources[i]] == Integer.MAX_VALUE) {
+                answer[i] = -1;
+            } else {
+                answer[i] = dist[sources[i]];
+            }
         }
 
         return answer;
     }
 
-    public static int[] dijkstra(ArrayList<ArrayList<Node>> graph, int start, int n) {
-        int[] distances = new int[n + 1];
-        Arrays.fill(distances, INF);
-        distances[start] = 0;
-        PriorityQueue<Node> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a.cost));
-        pq.offer(new Node(start, 0));
+    static void bfs(int start) {
+        PriorityQueue<Node> queue = new PriorityQueue<>(
+            (o1, o2) -> o1.u - o2.u);
 
-        while (!pq.isEmpty()) {
-            Node current = pq.poll();
-            int currentNode = current.vertex;
-            int currentDistance = current.cost;
+        dist[start] = 0;
+        queue.offer(new Node(start, dist[start]));
 
-            if (distances[currentNode] < currentDistance) {
-                continue;
-            }
+        while(!queue.isEmpty()) {
+            Node now = queue.poll();
 
-            for (Node node : graph.get(currentNode)) {
-                int cost = currentDistance + node.cost;
-                if (cost < distances[node.vertex]) {
-                    distances[node.vertex] = cost;
-                    pq.offer(new Node(node.vertex, cost));
+            for(Node next : list[now.v]) {
+
+                if(dist[next.v] > now.u + next.u) {
+                    dist[next.v] = now.u + next.u;
+                    queue.offer(new Node(next.v, dist[next.v]));
                 }
             }
         }
 
-        return distances;
     }
 
     static class Node {
-        int vertex;
-        int cost;
+        int v;
+        int u;
 
-        Node(int vertex, int cost) {
-            this.vertex = vertex;
-            this.cost = cost;
+        public Node(int v, int u) {
+            this.v = v;
+            this.u = u;
         }
     }
+
 }
