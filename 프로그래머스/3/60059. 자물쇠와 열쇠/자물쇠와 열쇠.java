@@ -27,7 +27,7 @@ class Solution {
 	    for (int i = offset; i < offset + N; i++) {
 	        for (int j = offset; j < offset + N; j++) {
 	            if (largeLock[i][j] != 1) {
-	               
+	                
 	                for (int x = 0; x < M; x++) {
 	                    for (int y = 0; y < M; y++) {
 	                        largeLock[startRow + x][startCol + y] -= key[x][y];
@@ -39,11 +39,6 @@ class Solution {
 	    }
 
 	    
-	    for (int i = 0; i < M; i++) {
-	        for (int j = 0; j < M; j++) {
-	            largeLock[startRow + i][startCol + j] -= key[i][j];
-	        }
-	    }
 
 	    return true;
 	}
@@ -54,7 +49,7 @@ class Solution {
         
 		int N = lock.length; 
 		int M = key.length;
-		int extendedSize = N + 2 * (M-1);
+		int extendedSize = N + 2 * (M - 1);
         int[][] largeLock = new int[extendedSize][extendedSize];
         
         for(int i = 0; i < N; i++) {
