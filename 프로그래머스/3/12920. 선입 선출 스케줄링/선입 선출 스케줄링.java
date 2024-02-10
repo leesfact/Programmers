@@ -1,6 +1,7 @@
+import java.util.*;
 class Solution {
     public int solution(int n, int[] cores) {
-        int answer = 0;
+          int answer = 0;
         int coreCount = cores.length;
         
         if (n <= coreCount) return n;
