@@ -1,19 +1,19 @@
 class Solution {
     public int solution(int n, int[] cores) {
-       int answer = 0;
+        int answer = 0;
         int coreCount = cores.length;
         
         if (n <= coreCount) return n;
     
         int start = 1;
-        int end = 10000 * n; 
+        int end = cores[0] * n; 
         for (int core : cores) {
             end = Math.min(end, core * n);
         }
         int minTime = 0;
         int extraWork = 0; 
         
-        
+       
         while (start <= end) {
             int mid = (start + end) / 2;
             int work = calculateWork(mid, cores);
@@ -38,6 +38,7 @@ class Solution {
             }
         }
         
+       
         return answer;
     }
     
