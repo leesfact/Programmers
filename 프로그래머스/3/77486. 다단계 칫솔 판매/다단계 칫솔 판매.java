@@ -1,39 +1,43 @@
 import java.util.*;
 class Solution {
+    class Person {
+        String name;
+        Person parent;
+        int money;
+
+        public Person(String name, Person parent, int money) {
+            this.name = name;
+            this.parent = parent;
+            this.money = money;
+    }
+
+    void getReward(int i) {
+        int moneyToParent = (int) (i * 0.1);
+        this.money += i - moneyToParent;
+        if (this.parent != null)
+            this.parent.getReward(moneyToParent);
+    }
+}
+
     public int[] solution(String[] enroll, String[] referral, String[] seller, int[] amount) {
-        Map<String, Integer> profitMap = new HashMap<>();
-        Map<String, String> referralMap = new HashMap<>();
-        
-        
+        HashMap<String, Person> personHashMap = new HashMap<>();
+        for (String name : enroll)
+            personHashMap.put(name, new Person(name, null, 0));
+
         for (int i = 0; i < enroll.length; i++) {
-            profitMap.put(enroll[i], 0); 
-            referralMap.put(enroll[i], referral[i]);
+            if (referral[i].equals("-"))
+                continue;
+            personHashMap.get(enroll[i]).parent = personHashMap.get(referral[i]);
         }
-        
-        for(int i = 0; i < seller.length; i++) {
-        	String currentSeller = seller[i];
-        	int currentProfit = amount[i] * 100;
-        	
-        	while (!currentSeller.equals("-") && currentProfit > 0) {
-        		int distribution = currentProfit / 10;
-        		if (distribution < 1) {
-    		        profitMap.put(currentSeller, profitMap.get(currentSeller) + currentProfit);
-    		        break;
-        		}
-        		int remainingProfit = currentProfit - distribution;
-        		
-        		
-        		profitMap.put(currentSeller, profitMap.get(currentSeller) + remainingProfit );
-        		currentSeller = referralMap.get(currentSeller);
-        		currentProfit = distribution;
-        	}
-        }
-        
-        int[] answer = new int[enroll.length];
-        for (int i = 0; i < enroll.length; i++) {
-            answer[i] = profitMap.get(enroll[i]);
-        }
-       
-        return answer;
+
+        for (int i = 0; i < seller.length; i++)
+            personHashMap.get(seller[i]).getReward(amount[i] * 100);
+
+        int[] result = new int[enroll.length];
+
+        for (int i = 0; i < result.length; i++)
+            result[i] = personHashMap.get(enroll[i]).money;
+
+        return result;
     }
 }
