@@ -1,110 +1,115 @@
 import java.util.*;
 class Solution {
-     static Set<Build> structures = new HashSet<>();
+    static boolean[][] column;
+	static boolean[][] beam;
 	
-	 static class Build{
-		int x;
-		int y;
-		int type; // 0 for column, 1 for beam
 	
+	public static boolean checkColumn(int x, int y) {
+		if(y == 0 || column[x][y-1]) return true; // 지면 위에 
 		
-		public Build(int x, int y, int type) {
-			this.x = x;
-			this.y = y;
-			this.type = type;
+		//현재 x좌표 이전(x-1)에 보가 있는지 또는 현재 x좌표에 보가 있는지
+		if((x > 0 && beam[x-1][y]) || beam[x][y]) return true; 
+		
+		
+		return false;
+				
+	}
+	
+	public static boolean checkBeam(int x, int y) {
+		// 현재 x, y-1 좌표에 기둥이 있는 경우, 현재 x+1, y-1 좌표에 기둥이 있는 경우
+		if(column[x][y-1] || column[x+1][y-1]) return true;
+		
+		// 양쪽에 보가 있는 경우
+		if(x > 0 && beam[x-1][y] && beam[x+1][y]) return true;
+		
+		return false;
+	}
+	
+	public static boolean canDelete(int x, int y) {
+		for(int i = Math.max(x - 1, 0); i <= x + 1; i++) {
+			for(int j = y; j <= y + 1; j++) {
+				if(column[i][j] && !checkColumn(i, j)) {
+					return false;
+				}
+				if(beam[i][j] && !checkBeam(i, j)) {
+					return false;
+				}
+			}
 		}
 		
-		
-		@Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            Build build = (Build) o;
-            return x == build.x && y == build.y && type == build.type;
-        }
-
-        @Override
-        public int hashCode() {
-            return (31 * x + y) * 31 + type;
-        }
+		return true;
 	}
-	 
-	
-	 public static boolean existsColumn(int x, int y) {
-	     return structures.contains(new Build(x, y, 0));
-	 }
-
-	 public static boolean existsBeam(int x, int y) {
-	     return structures.contains(new Build(x, y, 1));
-	 }
-
-	 public static boolean canPlaceBuild(Build build) {
-	     if (build.type == 0) { 
-	        
-	         if (build.y == 0) return true;
-	       
-	         if (existsBeam(build.x - 1, build.y) || existsBeam(build.x, build.y)) return true;
-	        
-	         if (existsColumn(build.x, build.y - 1)) return true;
-	     } else { 
-	      
-	         if (existsColumn(build.x, build.y - 1) || existsColumn(build.x + 1, build.y - 1)) return true;
-	         
-	         if (existsBeam(build.x - 1, build.y) && existsBeam(build.x + 1, build.y)) return true;
-	     }
-	     return false;
-	 }
-
-	 public static boolean canRemoveBuild(Build build) {
-	    
-	     structures.remove(build);
-	     
-	    
-	     for (Build otherBuild : structures) {
-	         if (!canPlaceBuild(otherBuild)) {
-	            
-	             structures.add(build);
-	             return false;
-	         }
-	     }
-	     
-	     return true;
-	 }
 	
 	public static int[][] solution(int n, int[][] build_frame) {
        
-        for(int[] frame : build_frame) {
-        	Build build = new Build(frame[0], frame[1], frame[2]);
-        	
-        	if(frame[3] == 1) { 
-        		if(canPlaceBuild(build)) {
-        			structures.add(build);
-        		}
-        	}else { 
-        		if(canRemoveBuild(build)) {
-        			structures.remove(build);
-        		}
-        	}
-        }
+		column = new boolean[n+2][n+2];
+		beam = new boolean[n+2][n+2];
         
-        int[][] answer = new int[structures.size()][3];
-        int index = 0;
-        for (Build build : structures) {
-            answer[index][0] = build.x;
-            answer[index][1] = build.y;
-            answer[index][2] = build.type;
-            index++;
-        }
-        
-        Arrays.sort(answer, (a, b) -> {
-            if (a[0] != b[0])
-                return Integer.compare(a[0], b[0]);
-            else if (a[1] != b[1])
-                return Integer.compare(a[1], b[1]);
-            else
-                return Integer.compare(a[2], b[2]);
-        });
-        
+		int count = 0;
+		for(int[] build : build_frame) {
+			int x = build[0];
+			int y = build[1];
+			int type = build[2];
+			int cmd = build[3];
+			
+			
+			if(type == 0) { // column
+				if(cmd == 1) { // 설치
+					if(checkColumn(x,y)) {
+						column[x][y] = true;
+						count++;
+					}
+				}else { // 삭제
+					column[x][y] = false;
+					if(!canDelete(x,y)) {
+						column[x][y] = true;
+					}else {
+						count--;
+					}
+				}
+				
+			}else { // beam
+				if(cmd == 1) {
+					if(checkBeam(x,y)) {
+						beam[x][y] = true;
+						count++;
+					}
+				}else { // 삭제
+					beam[x][y] = false;
+					if(!canDelete(x,y)) {
+						beam[x][y] = true;
+							
+					}else {
+						count--;
+					}
+				}					
+				
+			}
+		}
+			
+		
+		
+		int[][] answer = new int[count][3];
+		count = 0;
+		
+		
+		
+		for(int x = 0; x <= n; x++) {
+			for(int y = 0; y <= n; y++) {
+				if(column[x][y]) {
+					answer[count][0] = x;
+					answer[count][1] = y;
+					answer[count++][2] = 0;
+				}
+				if(beam[x][y]) {
+					answer[count][0] = x;
+					answer[count][1] = y;
+					answer[count++][2] = 1;
+				}
+			}
+		}
+
+		
         return answer;
     }
 }
