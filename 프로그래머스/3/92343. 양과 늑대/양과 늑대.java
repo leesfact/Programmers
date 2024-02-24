@@ -1,42 +1,54 @@
 import java.util.*;
 class Solution {
-    
-    static List<Integer>[] graph;
-    static int answer = 0;
-    
-    
-    public static void dfs(int index, int sheep, int wolves, int[] info, Set<Integer> unused){
-        if(sheep == wolves) return;
+    static int[] Node;
+	static ArrayList<Integer>[]  graph = new ArrayList[17];
+	static boolean[][][] visited;
+	static int maxSheep;
+	
+	static void dfs(int pos, int sheep, int wolves) {
+		if(visited[pos][sheep][wolves]) return;
+		visited[pos][sheep][wolves] = true;
+		
+		int backupSheep = sheep;
+		int backupWolves = wolves;
+		
+		int backupNode = Node[pos];
+		
+		
+		if(Node[pos] == 0) sheep++;
+		else if(Node[pos] == 1) wolves++;
+		
+		Node[pos] = -1;
+		
+		if(wolves < sheep) {
+			maxSheep = Math.max(maxSheep, sheep);
+			for(int next : graph[pos]) {
+				dfs(next, sheep, wolves);
+			}
+		}
+		
+		Node[pos] = backupNode;
+		visited[pos][backupSheep][backupWolves] = false;
+		
+	}
+	
+	public static int solution(int[] info, int[][] edges) {
         
-        answer = Math.max(answer, sheep);
-        
-        for(int next : graph[index]){
-            unused.add(next);
+		Node = info;
+		
+        for(int i = 0; i < Node.length; i++) {
+        	graph[i] = new ArrayList<>();
         }
         
-        for(int next : unused){
-            Set<Integer> set = new HashSet<>(unused);
-            set.remove(next);
-            if(info[next] == 1){
-                dfs(next, sheep, wolves + 1, info, set);
-            }else{
-                dfs(next, sheep + 1, wolves, info, set);
-            }
-        }
-    }
-    public int solution(int[] info, int[][] edges) {
-        int n = info.length;
-        graph = new List[n];
-        
-        for(int i = 0; i < n; i++){
-            graph[i] = new ArrayList<>();
+        for(int[] edge : edges) {
+        	graph[edge[0]].add(edge[1]);
+        	graph[edge[1]].add(edge[0]);
         }
         
-        for(int[] edge : edges){
-            graph[edge[0]].add(edge[1]);
-        }
-        
-        dfs(0, 1, 0, info, new HashSet<>());
-        return answer;
+        visited = new boolean[17][18][18];
+        maxSheep = 0;
+        dfs(0, 0, 0);
+       
+        return maxSheep;
     }
 }
