@@ -5,7 +5,7 @@ class Solution {
         int sum = 0;
         for(int number : numbers){
             if(sum > n){
-                return sum;
+                break;
             }
             sum += number;
         }
