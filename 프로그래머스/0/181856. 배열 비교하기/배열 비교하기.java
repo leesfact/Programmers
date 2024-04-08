@@ -11,9 +11,7 @@ class Solution {
         		arr2sum += arr2[i];
         	}
         	
-        	if(arr1sum > arr2sum) return 1;
-        	else if(arr1sum < arr2sum) return -1;
-        	else return 0;
+        	return Integer.compare(arr1sum, arr2sum);
         }
     }
 }
