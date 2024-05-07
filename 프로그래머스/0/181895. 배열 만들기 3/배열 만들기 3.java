@@ -1,25 +1,22 @@
-import java.util.*;
 class Solution {
     public int[] solution(int[] arr, int[][] intervals) {
-        ArrayList<Integer> arrList = new ArrayList<>();
-        ArrayList<Integer> newList = new ArrayList<>();
-        for(int a : arr) {
-        	arrList.add(a);
-        }
-        
-        for(int[] interval : intervals) {
-        	int start = interval[0]; 
-        	int end = interval[1];
-        	
-        	newList.addAll(arrList.subList(start, (end+1)));
-        }
+        int length = 0;
        
-        
-        int[] answer = new int[newList.size()];
-        for(int i = 0; i < answer.length; i++) {
-        	answer[i] = newList.get(i);
-        }
-        
-        return answer;
+       for(int[] interval : intervals) {
+    	   length += interval[1] - interval[0] + 1;
+       }
+       int[] answer = new int[length];
+       int index = 0;
+       
+       for(int[] interval : intervals) {
+    	   int start = interval[0];
+    	   int end = interval[1] + 1;
+    	   int size = end - start;
+    	   System.arraycopy(arr, start, answer, index, size);
+    	   index += size;
+       }
+       
+       
+       return answer;
     }
 }
