@@ -5,7 +5,7 @@ class Solution {
         for(int[] query : queries) {
         	
         	for(int i = query[0]; i <= query[1]; i++) {
-        		copyArr[i] += 1;
+        		copyArr[i]++;
         	}
         }
         
