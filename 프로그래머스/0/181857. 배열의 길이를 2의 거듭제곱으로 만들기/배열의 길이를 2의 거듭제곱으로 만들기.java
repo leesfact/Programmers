@@ -1,15 +1,12 @@
 class Solution {
     public int[] solution(int[] arr) {
-        int[] answer = {};
-        for(int i = 0; i <= 10; i++) {
-        	if(arr.length <= (int)Math.pow(2, i)) {
-        		
-        		answer = new int[(int)Math.pow(2, i)];
-        		break;
-        		
-        	}
-        }
+        int targetLength = 1;
+		
+		while(targetLength < arr.length) {
+			targetLength *= 2;
+		}
         
+		int[] answer = new int[targetLength];
         for(int i = 0; i < arr.length; i++) {
         	answer[i] = arr[i];
         }
