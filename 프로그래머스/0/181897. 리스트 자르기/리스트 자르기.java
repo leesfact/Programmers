@@ -1,40 +1,19 @@
-import java.util.*;
 class Solution {
     public int[] solution(int n, int[] slicer, int[] num_list) {
-        ArrayList<Integer> list = new ArrayList<>();
-        switch (n) {
-			case 1:
-				for(int i = 0; i <= slicer[1]; i++) {
-					list.add(num_list[i]);
-				}
-			
-				break;
-			case 2:
-				for(int i = slicer[0]; i < num_list.length; i++) {
-					list.add(num_list[i]);
-				}
-				
-				break;
-				
-			case 3:
-				
-				for(int i = slicer[0]; i <= slicer[1]; i++) {
-					list.add(num_list[i]);
-				}
-				
-				break;
-				
-			default:
-				for(int i = slicer[0]; i <= slicer[1]; i+= slicer[2]) {
-					list.add(num_list[i]);
-				}
-				break;
-		}
-        int[] answer = new int[list.size()];
-        for(int i = 0; i < list.size(); i++) {
-        	answer[i] = list.get(i);
+        int start = n == 1 ? 0 : slicer[0];
+		int end = n == 2 ? num_list.length - 1 : slicer[1];
+		int step = n == 4 ? slicer[2] : 1;
+		
+		
+		int[] answer = new int[(end - start + step) / step];
+		
+		
+		
+        
+		for (int i = start, j = 0; i <= end; i += step) {
+            answer[j++] = num_list[i];
         }
-       
+		
         return answer;
     }
 }
