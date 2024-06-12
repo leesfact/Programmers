@@ -5,7 +5,7 @@ class Solution {
         int[] newArr = new int[arr.length];
         
         while(true) {
-        	boolean isSame = true;
+        	
         	
         	for (int i = 0; i < arr.length; i++) {
                 if (arr[i] >= 50 && arr[i] % 2 == 0) {
@@ -18,12 +18,10 @@ class Solution {
                 
                 
             }
-        	if (!Arrays.equals(arr, newArr)) {
-        		isSame = false;
-        	}
-        	if (isSame) {
+        	if (Arrays.equals(arr, newArr)) {
         		break;
         	}
+        	
         	
         	arr = newArr.clone();
         	answer++;
