@@ -5,11 +5,9 @@ class Solution {
         
         int cnt = 0;
         while (cnt < arr.length) {
-        	if(stack.isEmpty()) stack.add(arr[cnt++]);
-        	else {
-        		if(stack.peek() < arr[cnt]) stack.add(arr[cnt++]);
-        		else stack.pop();
-        	}
+        	if(stack.isEmpty() || stack.peek() < arr[cnt]) stack.add(arr[cnt++]);
+        	else stack.pop();
+   
         	
         }
         int[] stk = new int[stack.size()];
