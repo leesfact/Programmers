@@ -1,32 +1,19 @@
 import java.util.*;
 class Solution {
     public int solution(int[] rank, boolean[] attendance) {
-        int[] copyRank = rank.clone();
-        Arrays.sort(rank);
-        int[] sortRank = rank.clone();
-        Queue<Integer> queue = new LinkedList<>();
+        PriorityQueue<Integer> que = new PriorityQueue<>((a, b) -> rank[a] - rank[b]);
+
+       
+        for (int i = 0; i < attendance.length; i++) {
+            if (attendance[i]) {
+            	que.add(i);
+            	
+            	
+            }
+        }
         
 
         
-        for(int i = 0; i < rank.length; i++) {
-        	for(int j = 0; j < rank.length; j++) {
-        		if(sortRank[i] == copyRank[j]) queue.add(j);
-        	}
-        }
-        
-        
-        ArrayList<Integer> Ranking = new ArrayList<>();
-        
-        
-        while(!queue.isEmpty() && Ranking.size() < 3) {
-        	if(attendance[queue.peek()]) Ranking.add(queue.poll());
-        	else {
-        		queue.poll();
-        	}
-        	
-        }
-        
-        
-        return (10000 * Ranking.get(0)) + (100 * Ranking.get(1)) + Ranking.get(2);
+        return que.poll() * 10000 + que.poll() * 100 + que.poll();
     }
 }
