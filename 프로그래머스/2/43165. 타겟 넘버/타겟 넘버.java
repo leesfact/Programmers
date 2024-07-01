@@ -1,5 +1,5 @@
 class Solution {
-    static int answer = 0;
+    static int answer;
     public void dfs(int[] numbers, int target, int index, int sum) {
 		
 		
@@ -20,6 +20,7 @@ class Solution {
 	
 	public int solution(int[] numbers, int target) {
 		
+        answer = 0;
         
         dfs(numbers, target, 0, 0);
         
