@@ -1,37 +1,37 @@
 import java.util.*;
 class Solution {
-    static boolean[] visited;
-	static List<String> answerList;
+    static Map<String, PriorityQueue<String>> graph;
+	static List<String> route;
+	static boolean found;
 	
-	
-	public static void dfs(String[][] tickets, String current, LinkedList<String> route) {
-		if (route.size() == tickets.length + 1) {
-            answerList = new LinkedList<>(route);
-            return;
-        }
+	public void dfs(String depart) {
+		PriorityQueue<String> arrival = graph.get(depart);
 		
-		for(int i = 0; i < tickets.length; i++) {
-			if(!visited[i] && tickets[i][0].equals(current)) {
-				visited[i] = true;
-				route.add(tickets[i][1]);
-				dfs(tickets, tickets[i][1], route);
-				if (answerList != null) return;
-                route.removeLast();
-                visited[i] = false;
-			}
+		
+		
+		while(arrival != null && !arrival.isEmpty()) {
+			dfs(arrival.poll());
 		}
+		
+		route.add(0, depart);
+		System.out.println(route);
 	}
 	
-	public static String[] solution(String[][] tickets) {
-        visited = new boolean[tickets.length];
-        Arrays.sort(tickets, Comparator.comparing((String[] ticket) -> ticket[0]).thenComparing(ticket -> ticket[1]));
+	public String[] solution(String[][] tickets) {
+        graph = new HashMap<>();
+        route = new LinkedList<>();
         
-        LinkedList<String> route = new LinkedList<>();
-        route.add("ICN");
+        for(String[] ticket : tickets) {
+        	graph.putIfAbsent(ticket[0], new PriorityQueue<>());
+        	graph.get(ticket[0]).add(ticket[1]);
+        }
         
-        dfs(tickets, "ICN", route);
         
-      
-        return answerList.toArray(new String[0]);
+        dfs("ICN");
+        
+       
+        
+        
+        return route.toArray(new String[0]);
     }
 }
