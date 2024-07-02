@@ -1,47 +1,47 @@
-import java.util.*;
-
 class Solution {
-   final static int MAX = 200 + 10;
-	static boolean[][] map;
-	static boolean[]visited;
+    static boolean[][] map;
+	static boolean[] visited;
+	static int answer;
 	
-	static int n;
-	
-	
-	public static void dfs(int node) {
-		visited[node] = true;
+	public void dfs(int index) {
+		visited[index] = true;
 		
-		for(int i = 1; i <= n; i++) {
-			if(map[node][i] && !visited[i]) {
+		for(int i = 0; i < map.length; i++) {
+			if(!visited[i] && map[index][i]) {
 				dfs(i);
+				
 			}
 		}
+		
 	}
 	
-	
-	
-	
-	public static int solution(int n, int[][] computers) {
-		Solution.n = n;
-		map = new boolean[MAX][MAX];
-        visited = new boolean[MAX];
+	public int solution(int n, int[][] computers) {
+        answer = 0;
+        
+        map = new boolean[n][n];
+        visited = new boolean[n];
+        
         
         
         for(int i = 0; i < n; i++) {
         	for(int j = 0; j < n; j++) {
-        		map[i+1][j+1] = computers[i][j] == 1;
+        		
+        		if(computers[i][j] == 1) {
+        			map[i][j] = true;
+        		}
         	}
         }
         
-        int answer = 0;
-        for (int i = 1; i <= n; i++) {
-            if (!visited[i]) {
-                dfs(i);
-                answer++;
-            }
+        
+        
+        for(int i = 0; i < n; i++) {
+        	if(!visited[i]) {
+        		dfs(i);
+        		answer++;
+        	}
         }
-     
-		
+        
+        
         return answer;
     }
 }
